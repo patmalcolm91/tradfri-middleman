@@ -24,6 +24,7 @@ class Bulb:
         self._last_t_time = 0
         self._b = None
         self._last_b_time = 0
+        self._t_sent_while_off = False
 
     @property
     def t(self):
@@ -33,6 +34,8 @@ class Bulb:
     def t(self, val):
         self._last_t_time = time.time()
         self._t = val.decode("utf-8")
+        if self._b is None or self._b == 0:
+            self._t_sent_while_off = True
         self._publish()
 
     @property
@@ -44,11 +47,16 @@ class Bulb:
         self._last_b_time = time.time()
         self._b = val.decode("utf-8")
         self._publish()
+        if float(self._b) > 0:
+            self._t_sent_while_off = False
 
     def _purge_old(self):
         _current_time = time.time()
         if _current_time - self._last_t_time > COMBINE_THRESHOLD:
-            self._t = None
+            if self._t_sent_while_off:
+                self._last_t_time = _current_time
+            else:
+                self._t = None
         if _current_time - self._last_b_time > COMBINE_THRESHOLD:
             self._b = None
 
