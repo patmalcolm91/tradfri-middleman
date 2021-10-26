@@ -29,7 +29,7 @@ zigbee2mqtt/bulb1/set {"brightness": 255, "color_temp": 400}
 
 ### Unit Conversion
 If the global variable ``CONVERT`` is set to ``True``, automatic unit conversions will be performed. This will be done
-in both directions (i.e. both wheh when setting a value and when reporting a state).
+in both directions (i.e. both when setting a value and when reporting a state).
 
 |            | zigbee2mqtt unit | tradfrimiddleman unit |
 |------------|------------------|-----------------------|
