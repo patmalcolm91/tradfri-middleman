@@ -27,6 +27,15 @@ zigbee2mqtt/bulb1/set {"brightness": 255}
 zigbee2mqtt/bulb1/set {"brightness": 255, "color_temp": 400}
 ```
 
+### Unit Conversion
+If the global variable ``CONVERT`` is set to ``True``, automatic unit conversions will be performed. This will be done
+in both directions (i.e. both when setting a value and when reporting a state).
+
+|            | zigbee2mqtt unit | tradfrimiddleman unit |
+|------------|------------------|-----------------------|
+| brightness | raw (0-255)      | percent (0-100)       |
+| color_temp | mired            | Kelvin                |
+
 ## Installation
 Simply download the script file [tradfri-middleman.py](tradfri-middleman.py) from this repository, make sure you have
 the python module "paho-mqtt" installed (``pip install paho-mqtt``), change the settings at the top of the file as
