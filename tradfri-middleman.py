@@ -11,6 +11,7 @@ ZIGBEE2MQTT_PREFIX = "zigbee2mqtt"
 QOS = 0
 RETAIN = False
 CONVERT = False
+REPORT_STATUS = True
 # ================================================================================================
 
 bulbs = {}
@@ -113,6 +114,8 @@ def on_message(client, userdata, msg):
 
 def on_client_connect(client, userdata, flags, rc):
     print("Connected with result code "+str(rc))
+    if REPORT_STATUS:
+        client.publish("tradfrimiddleman/status", "online", qos=1, retain=True)
     client.subscribe(SUBSCRIBE_PREFIX+"/+/set/brightness")
     client.subscribe(SUBSCRIBE_PREFIX+"/+/set/color_temp")
     if CONVERT:
@@ -122,6 +125,8 @@ def on_client_connect(client, userdata, flags, rc):
 
 if __name__ == "__main__":
     client = mqtt.Client()
+    if REPORT_STATUS:
+        client.will_set("tradfrimiddleman/status", "offline", retain=True)
     client.on_connect = on_client_connect
     client.on_message = on_message
 
