@@ -12,6 +12,7 @@ QOS = 0
 RETAIN = False
 CONVERT = False
 REPORT_STATUS = True
+SUPPRESS_COLOR_TEMP_WHEN_OFF = True  # don't send color_temp value when brightness is zero
 # ================================================================================================
 
 bulbs = {}
@@ -86,7 +87,9 @@ class Bulb:
 
     def _publish(self):
         self._purge_old()
-        _param_vals = [("\"brightness\"", str(self.b)), ("\"color_temp\"", str(self.t))]
+        _param_vals = [("\"brightness\"", f"{self.b:0.2f}")]
+        if self.b > 0 or not SUPPRESS_COLOR_TEMP_WHEN_OFF:
+            _param_vals.append(("\"color_temp\"", f"{self.t:0.2f}"))
         payload = "{" + ", ".join([param+": "+val for param, val in _param_vals if val != "None"]) + "}"
         print(self._topic, payload)
         self._client.publish(self._topic, payload, QOS, retain=RETAIN)
