@@ -87,9 +87,9 @@ class Bulb:
 
     def _publish(self):
         self._purge_old()
-        _param_vals = [("\"brightness\"", f"{self.b:0.2f}")]
-        if self.b > 0 or not SUPPRESS_COLOR_TEMP_WHEN_OFF:
-            _param_vals.append(("\"color_temp\"", f"{self.t:0.2f}"))
+        _param_vals = [("\"brightness\"", f"{self.b:0.2f}" if self.b is not None else "None")]
+        if (self.b is None or self.b > 0) or not SUPPRESS_COLOR_TEMP_WHEN_OFF:
+            _param_vals.append(("\"color_temp\"", f"{self.t:0.2f}" if self.t is not None else "None"))
         payload = "{" + ", ".join([param+": "+val for param, val in _param_vals if val != "None"]) + "}"
         print(self._topic, payload)
         self._client.publish(self._topic, payload, QOS, retain=RETAIN)
