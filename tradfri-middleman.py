@@ -13,6 +13,7 @@ RETAIN = False
 CONVERT = False
 REPORT_STATUS = True
 SUPPRESS_COLOR_TEMP_WHEN_OFF = True  # don't send color_temp value when brightness is zero
+MAX_BRIGHTNESS_VALUE = 254
 # ================================================================================================
 
 bulbs = {}
@@ -25,12 +26,12 @@ def mired_conversion(val):
 
 def brightness_to_percent(val):
     """Convert raw brightness (0-255) to a percent (0-100)."""
-    return (val / 255) * 100
+    return (val / MAX_BRIGHTNESS_VALUE) * 100
 
 
 def percent_to_brightness(val):
     """Convert percent (0-100) to a raw brightness (0-255)."""
-    return (val / 100) * 255
+    return (val / 100) * MAX_BRIGHTNESS_VALUE
 
 
 class Bulb:
