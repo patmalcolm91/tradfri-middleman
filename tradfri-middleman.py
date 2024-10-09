@@ -31,7 +31,7 @@ def brightness_to_percent(val):
 
 def percent_to_brightness(val):
     """Convert percent (0-100) to a raw brightness (0-255)."""
-    return (val / 100) * MAX_BRIGHTNESS_VALUE
+    return round((val / 100) * MAX_BRIGHTNESS_VALUE)
 
 
 class Bulb:
@@ -88,7 +88,7 @@ class Bulb:
 
     def _publish(self):
         self._purge_old()
-        _param_vals = [("\"brightness\"", f"{self.b:0.2f}" if self.b is not None else "None")]
+        _param_vals = [("\"brightness\"", f"{self.b:0.0f}" if self.b is not None else "None")]
         if (self.b is None or self.b > 0) or not SUPPRESS_COLOR_TEMP_WHEN_OFF:
             _param_vals.append(("\"color_temp\"", f"{self.t:0.2f}" if self.t is not None else "None"))
         payload = "{" + ", ".join([param+": "+val for param, val in _param_vals if val != "None"]) + "}"
